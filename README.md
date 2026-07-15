@@ -308,6 +308,8 @@ sail artisan migrate:fresh --seed
 - OS（Dockerが動作する任意のOS）: -
 - PHP : 8.2
 - Laravel : 10.x
+    - Laravel Sail
+    - Laravel Fortify
 - DB : MySQL 8.0
 - Webサーバー : Nginx
 - フロントエンド : Vite, Tailwind CSS ^3.4.0
