@@ -108,8 +108,8 @@ return [
     | localized telephone numbers, street address information and more.
     |
     */
-
-    'faker_locale' => 'en_US',
+    //ダミーデータを日本語に設定
+    'faker_locale' => 'ja_JP',
 
     /*
     |--------------------------------------------------------------------------
