@@ -17,8 +17,10 @@ class ContactFactory extends Factory
      */
     public function definition(): array
     {
+        $categories = Category::pluck('id')->toArray();
+
         return [
-            'category_id' => Category::factory(),
+            'category_id' => fake()->randomElement($categories),
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
             'gender' => fake()->numberBetween(0, 2),
