@@ -23,7 +23,7 @@ class ContactFactory extends Factory
             'category_id' => fake()->randomElement($categories),
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
-            'gender' => fake()->numberBetween(0, 2),
+            'gender' => fake()->numberBetween(1, 3),
             'email' => fake()->safeEmail(),
             'tel' => fake()->numerify('###########'),
             'address' => fake()->address(),
