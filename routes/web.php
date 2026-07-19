@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\TagController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,11 @@ Route::get('/', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
-    Route::get('/admin/contacts/{contact_id}',[AdminController::class,'show'])->name('admin.show');
-    Route::get('/admin/tags/{tag_id}/edit', [AdminController::class, 'update'])->name('admin.update');
+    Route::get('/admin/contacts/{contact}',[AdminController::class,'show'])->name('admin.show');
+
+    Route::get('/admin/tags/{tag}/edit', [TagController::class, 'edit'])->name('tag.edit');
+    Route::post('/admin/tags', [TagController::class, 'store'])->name('tag.store');
+    Route::put('/admin/tags/{tag}', [TagController::class, 'update'])->name('tag.update');
+
+    Route::delete('/admin/contacts/{contact}',[AdminController::class,'destroy'])->name('contact.delete');
 });

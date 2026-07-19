@@ -55,9 +55,10 @@ class AdminController extends Controller
         return view('admin.show', compact('contact'));
     }
 
-    public function update($tag_id)
+    public function destroy($contact_id)
     {
-        $tag = Tag::find($tag_id);
-        return view('admin.tags.edit', compact('tag'));
+        $contact = Contact::find($contact_id);
+        $contact->delete();
+        return redirect()->route('admin.index');
     }
 }
