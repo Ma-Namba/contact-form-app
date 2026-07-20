@@ -31,6 +31,8 @@ class ContactRequest extends FormRequest
             'address' => 'required|string|max:255',
             'building' => 'nullable|string|max:255',
             'detail' => 'required|string|max:120',
+            'tag_ids' => 'nullable|array',
+            'tag_ids.' => 'integer|exists:tags,id',
         ];
     }
 
