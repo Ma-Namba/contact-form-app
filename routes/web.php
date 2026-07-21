@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\ContactController;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -34,3 +33,7 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/admin/contacts/{contact}',[AdminController::class,'destroy'])->name('contact.delete');
 });
+
+Route::get('contacts/export', [ContactController::class, 'export']);
+Route::get('test-csv', [ContactController::class, 'export']);
+Route::get('/api/v1/contacts', [ContactController::class, 'export']);
