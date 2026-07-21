@@ -10,9 +10,12 @@ class TagController extends Controller
 
     public function store(Request $request)
     {
-        $name = $request->input('name');
-        $tag = Tag::create(['name' => $name]);
-        return redirect()->route('admin.index');
+        $validated = $request->validate([
+            'name' => 'required|string|max:50|unique:tags',
+        ]);
+        $tag = Tag::create(['name' => $validated['name'],]);
+
+        return redirect()->route('admin.index',$tag);
     }
     public function edit($tag_id)
     {
@@ -22,9 +25,13 @@ class TagController extends Controller
 
     public function update(Request $request,$tag_id)
     {
-        $name = $request->input('name');
+        $validated = $request->validate([
+            'name' => 'required|string|max:50|unique:tags',
+        ]);
+
         $tag = Tag::find($tag_id);
-        $tag->update(['name'=>$name]);
-        return redirect()->route('admin.index');
+        $tag->update(['name' => $validated['name'],]);
+
+        return redirect()->route('admin.index',$tag);
     }
 }

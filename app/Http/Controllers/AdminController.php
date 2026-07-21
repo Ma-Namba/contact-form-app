@@ -4,24 +4,28 @@ namespace App\Http\Controllers;
 
 use Auth;
 use Illuminate\Http\Request;
+use App\Http\Requests\AdminRequest;
 use App\Models\Category;
 use App\Models\Contact;
 use App\Models\Tag;
 
 class AdminController extends Controller
 {
-    public function index(Request $request)
+    public function index(AdminRequest $request)
     {
         $user = Auth::user();
         $categories = Category::all();
         $tags = Tag::all();
 
-        $query = Contact::query();
-        $keyword = $request->input('keyword');
-        $date = $request->input('date');
-        $gender = $request->input('gender');
-        $category = $request->input('category_id');
+        $validated = $request->validated();
 
+        $query = Contact::query();
+        $keyword = $validated['keyword']??'';
+        $date = $validated['date']??'';
+        $gender = $validated['gender']??'';
+        $category = $validated['category_id']??'';
+
+        // キーワードで検索
         $contacts = $query->when($keyword, function ($query, $keyword) {
             return $query->where('first_name', 'like', '%' . $keyword . '%')
                 ->orwhere('last_name', 'like', '%' . $keyword . '%')
