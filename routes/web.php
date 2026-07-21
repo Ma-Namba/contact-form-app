@@ -36,3 +36,4 @@ Route::middleware('auth')->group(function () {
 
 Route::get('contacts/export', [ContactController::class, 'export']);
 Route::get('test-csv', [ContactController::class, 'export']);
+Route::get('/api/v1/contacts', [ContactController::class, 'export']);
