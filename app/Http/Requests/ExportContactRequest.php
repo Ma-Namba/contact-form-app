@@ -34,14 +34,11 @@ class ExportContactRequest extends FormRequest
     public function messages()
     {
         return [
-            'category_id.required' => 'お問い合わせの種類の選択は必須です。',
-            'first_name.required' => '苗字は必須です。',
-            'last_name.required' => '名前は必須です。',
-            'gender.required' => '性別の選択は必須です。',
-            'email.required' => 'メールアドレスは必須です。',
-            'tel' => '電話番号は必須です。',
-            'address' => '住所の入力は必須です。',
-            'detail' => 'お問い合わせの内容は必須です。'
+            'keyword.max' => 'キーワードは255文字までです。',
+            'gender.int' => '1:男性,2:女性,3:その他の数字で入力してください。',
+            'page.min' => '最低値1です。',
+            'per_page.min' => '1~100までを入力してください。',
+            'per_page.max' => '1~100までを入力してください。',
         ];
     }
 }

@@ -10,6 +10,7 @@ class TagController extends Controller
 
     public function store(Request $request)
     {
+        //タグバリデーション
         $validated = $request->validate([
             'name' => 'required|string|max:50|unique:tags',
         ]);
@@ -25,6 +26,7 @@ class TagController extends Controller
 
     public function update(Request $request,$tag_id)
     {
+        //タグバリデーション
         $validated = $request->validate([
             'name' => 'required|string|max:50|unique:tags',
         ]);

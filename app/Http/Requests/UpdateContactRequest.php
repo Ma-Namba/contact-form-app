@@ -36,5 +36,25 @@ class UpdateContactRequest extends FormRequest
             'tag_ids.' => 'integer|exists:tags,id',
         ];
     }
-
+    public function messages()
+    {
+        return [
+            'category_id.required' => 'お問い合わせの種類の選択は必須です。',
+            'first_name.required' => '苗字は必須です。',
+            'last_name.required' => '名前は必須です。',
+            'gender.required' => '性別の選択は必須です。',
+            'email.required' => 'メールアドレスは必須です。',
+            'tel' => '電話番号は必須です。',
+            'address' => '住所の入力は必須です。',
+            'detail' => 'お問い合わせの内容は必須です。',
+        ];
+    }
+    protected function failedValidation(Validator $validator)
+    {
+        // エラー時は強制的に422のJSONレスポンスを投げる
+        throw new HttpResponseException(response()->json([
+            'status' => 'error',
+            'errors' => $validator->errors()
+        ], 422));
+    }
 }

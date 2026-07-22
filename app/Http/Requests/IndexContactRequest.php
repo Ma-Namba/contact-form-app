@@ -37,6 +37,9 @@ class IndexContactRequest extends FormRequest
     {
         return [
             'keyword.max' => '文字数は :max 文字以内で入力してください。',
+            'page.min' => '最低値1です。',
+            'per_page.min' => '1~100までの数値を入力してください。',
+            'per_page.max' => '1~100までの数値を入力してください。',
         ];
     }
 

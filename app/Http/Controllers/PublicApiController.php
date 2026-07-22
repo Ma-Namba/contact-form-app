@@ -94,6 +94,12 @@ class PublicApiController extends Controller
     {
         $contact = Contact::with('tags')->findOrFail($id);
 
+        if (!$id) {
+            return response()->json([
+                'message' => '"error":"お問い合わせが見つかりませんでした。'
+            ], 404);
+        }
+
         return (new ContactResource($contact))
             ->additional([
                 'tags' =>$contact->tags,
@@ -111,6 +117,13 @@ class PublicApiController extends Controller
         $validated = $request->validated();
 
         $contact = Contact::find($id);
+        
+        if (!$id) {
+            return response()->json([
+                'message' => '"error":"お問い合わせが見つかりませんでした。'
+            ], 404);
+        }
+
         $contact->update($validated);
 
         return (new ContactResource($contact))
@@ -127,15 +140,16 @@ class PublicApiController extends Controller
      */
     public function destroy(string $id)
     {
-        $contact = Contact::find($id);
+        $contact = Contact::findOrFail($id);
+
+        if (!$contact) {
+            return response()->json([
+                'message' => '"error":"お問い合わせが見つかりませんでした。"'
+            ], 404);
+        }
+
         $contact->delete();
-        return (new ContactResource($contact))
-            ->additional([
-                'tags' => $contact->tags,
-                'category' => $contact->category,
-            ])
-            ->response()
-            ->setStatusCode(204);
+        return response()->json([], 202);
     }
 
 }
