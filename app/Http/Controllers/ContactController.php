@@ -25,10 +25,14 @@ class ContactController extends Controller
         return view('contact.confirm', compact('validated', 'category'));
     }
 
-    public function thanks(ContactRequest $request)
+    public function update(ContactRequest $request)
     {
         $validated = $request->validated();
         Contact::create($validated);
+        return redirect('/thanks');
+    }
+    public function thanks(ContactRequest $validated)
+    {
         return view('contact.thanks', compact('validated'));
     }
 

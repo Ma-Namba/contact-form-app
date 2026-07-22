@@ -20,9 +20,13 @@ Route::get('/admin', function () {
     return redirect()->route('login');
 });
 
-//Route::get('/', [ContactController::class, 'index'])->name('contact.index');
+Route::get('/', [ContactController::class, 'index'])->name('contact.index');
 Route::post('/contacts/confirm', [ContactController::class, 'confirm'])->name('contact.confirm');
-Route::post('/contacts', [ContactController::class, 'thanks'])->name('contact.thanks');
+Route::post('/contacts', [ContactController::class, 'update'])->name('contact.update');
+Route::post('/thanks', [ContactController::class, 'thanks'])->name('contact.thanks');
+Route::get('/thanks', function() {
+    return view('contact.thanks');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');

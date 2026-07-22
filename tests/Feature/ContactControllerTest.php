@@ -49,7 +49,7 @@ class ContactControllerTest extends TestCase
         $response = $this->post(route('contact.confirm',$request));
         $response->assertStatus(200);
 
-        $response = $this->post(route('contact.thanks', $request));
+        $response = $this->post(route('contact.update', $request));
         $response = $response->assertViewIs('contact.thanks');
 
         $response = $this->assertDatabaseHas(Contact::class, [
