@@ -12,6 +12,8 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        //
+        //このURLだけCSRFチェックを無視するよう指定
+        '/api/v1/contacts',
+        '/api/v1/contacts/*',
     ];
 }

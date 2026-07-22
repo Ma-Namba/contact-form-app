@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Contact;
 use App\Models\Tag;
-use App\Http\Resources\ContactResource;
 use App\Http\Requests\ContactRequest;
 use App\Http\Requests\AdminRequest;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -26,10 +25,14 @@ class ContactController extends Controller
         return view('contact.confirm', compact('validated', 'category'));
     }
 
-    public function thanks(ContactRequest $request)
+    public function update(ContactRequest $request)
     {
         $validated = $request->validated();
         Contact::create($validated);
+        return redirect('/thanks');
+    }
+    public function thanks(ContactRequest $validated)
+    {
         return view('contact.thanks', compact('validated'));
     }
 
@@ -67,7 +70,8 @@ class ContactController extends Controller
             return $query->where('category_id', $category);
         });
 
-        $contacts = $query->with('tags')->get();
+        $contacts = $query->orderBy('created_at','desc')->get();
+        $total = $query->count();
 
         $fileName = 'contacts_export_' . date('YmdHis') . '.csv';
 
@@ -87,14 +91,13 @@ class ContactController extends Controller
             fwrite($stream, pack('C*', 0xEF, 0xBB, 0xBF));
 
             // 1行目：ヘッダー（カラム名）の書き込み
-            fputcsv($stream, ['id','category','first_name','last_name','gender','email','tel','address','building','detail','tags','created_at','updated_at']);
+            fputcsv($stream, ['id','category','first_name','last_name','gender','email','tel','address','building','detail','created_at']);
 
             // 2行目以降：データの書き込み
             foreach ($contacts as $contact) {
                 $tags_name = $contact->tags->implode('name', '、');
                 fputcsv($stream, [
                     $contact->id,
-                    $contact->category->content,
                     $contact->first_name,
                     $contact->last_name,
                     $contact->gender,
@@ -102,10 +105,9 @@ class ContactController extends Controller
                     $contact->tel,
                     $contact->address,
                     $contact->building,
+                    $contact->category->content,
                     $contact->detail,
-                    $tags_name,
                     $contact->created_at->format('Y-m-d H:i:s'),
-                    $contact->updated_at->format('Y-m-d H:i:s'),
                 ]);
             }
 

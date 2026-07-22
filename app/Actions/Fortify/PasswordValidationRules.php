@@ -14,6 +14,7 @@ trait PasswordValidationRules
      */
     protected function passwordRules(): array
     {
-        return ['required', 'string', Password::default(), 'confirmed'];
+        // 管理者パスワードが8文字以上
+        return ['required', 'string', Password::min(7)->default(), 'confirmed'];
     }
 }

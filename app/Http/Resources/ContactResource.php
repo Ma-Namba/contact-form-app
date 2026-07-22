@@ -16,18 +16,12 @@ class ContactResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'category' => CategoryResource::collection($this->whenLoaded('category')),
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
-            'gender' => $this->gender,
             'email' => $this->email,
             'tel' => $this->tel,
-            'address' => $this->address,
-            'building' => $this->building,
             'detail' => $this->detail,
-            'tags' => TagResource::collection($this->whenLoaded('tags')),
-            'created_at' => $this->created_at->toIso8601String(),
-            'updated_at' => $this->updated_at->toIso8601String(),
+            'date' => $this->date,
         ];
     }
 }
