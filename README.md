@@ -70,15 +70,10 @@ erDiagram
 注意: curl -s "https://laravel.build/..." は最新版のLaravelをインストールするため、今回は使用しません。<br>
 以下のDockerコマンドを実行して、Laravel 10.xを明示的に指定してプロジェクトを作成します。<br>
 
-#### [Laravel 10.x を指定してプロジェクトを作成]
+#### 提供リポジトリの本ディレクトリをクローン
+以下のリポジトリをクローンし、resourcesディレクトリを丸ごと入れ替えます。
 ```
-docker run --rm \
-    -u "$(id -u):$(id -g)" \
-    -v "$(pwd):/var/www/html" \
-    -w /var/www/html \
-    -e COMPOSER_CACHE_DIR=/tmp/composer_cache \
-    laravelsail/php82-composer:latest \
-    composer create-project laravel/laravel:^10.0 contact-form-app
+git clone https://github.com/Ma-Namba/contact-form-app
 ```
 </div>
 </details>
@@ -161,24 +156,24 @@ DB_PASSWORD=password
 <div style="border: 1px solid #ccc; padding: 10px;">
 本プロジェクトでは、フロントエンドのスタイリングにTailwind CSSを使用します。
 
-1. NPM依存パッケージのインストール
+NPM依存パッケージのインストール
 重要: sail npm install を実行する前に、必ずSailコンテナが起動していることを確認してください。
 ```
 sail npm install
 ```
 
-2. Tailwind CSSのインストール
+Tailwind CSSのインストール
 ```
 sail npm install -D tailwindcss@^3.4.0 postcss autoprefixer
 sail npm install alpinejs
 ```
 
-3. 設定ファイルの生成
+設定ファイルの生成
 ```
 sail npx tailwindcss init -p
 ```
 
-4. Tailwind CSSのテンプレートパス設定
+Tailwind CSSのテンプレートパス設定
 tailwind.config.js を開き、以下のように設定します。
 ```
 /** @type {import(""tailwindcss"").Config} */
@@ -195,21 +190,7 @@ export default {
 }
 ```
 
-5. 提供リポジトリのresourcesディレクトリと入れ替え
-以下のリポジトリをクローンし、resourcesディレクトリを丸ごと入れ替えます。
-```
-git clone https://github.com/coachtech-prepared-file/Preparedblade-ConfirmationTest-ContactForm.git
-```
-
-入れ替え手順:
-① Finderでプロジェクトフォルダを開きます。
-open .
-② プロジェクト内の resources フォルダを削除します。
-③ クローンしたリポジトリ内の resources フォルダをプロジェクト直下にコピーします。
-
-※コマンド操作に慣れている場合は rm -rf と cp -r でも可能ですが、誤削除を防ぐためFinderでの操作を推奨します。
-
-6. Vite開発サーバーの起動
+Vite開発サーバーの起動
 ```
 sail npm run dev
 ```
@@ -224,7 +205,7 @@ sail npm run dev
 <details>
 <summary>5. phpMyAdminの追加 : 手順詳細</summary>
 <div style="border: 1px solid #ccc; padding: 10px;">
-compose.yaml を開き、mysql サービスの後に以下の設定を追加してください。
+compose.yaml を開き、mysql サービスの後に以下の設定の追加をしてください。
 
 compose.yaml に追加する内容:
 ```
@@ -255,17 +236,17 @@ compose.yaml に追加する内容:
 ./vendor/bin/sail up -d
 ```
 
-# エイリアスを設定して 'sail' だけでコマンドを実行できるようにする
+#### エイリアスを設定して 'sail' だけでコマンドを実行できるようにする
 ```
 echo ""alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'"" >> ~/.zshrc
 ```
 
-# または bash の場合
+#### または bash の場合
 ```
 # echo ""alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'"" >> ~/.bashrc
 ```
 
-# シェルを再起動するか、新しいターミナルを開いてエイリアスを有効にする
+#### シェルを再起動するか、新しいターミナルを開いてエイリアスを有効にする
 ```
 exec $SHELL
 ```
