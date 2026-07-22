@@ -4,7 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\HttpResponseException;
-use App\Http\Requests\Validator;
+use Illuminate\Contracts\Validation\Validator;
+
 class UpdateContactRequest extends FormRequest
 {
     /**
