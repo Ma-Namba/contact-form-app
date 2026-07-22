@@ -27,4 +27,16 @@ class Handler extends ExceptionHandler
             //
         });
     }
+    /**
+     * 🔴 ここから新しく書き足しました 🔴
+     * すべてのエラーを強制的にJSONで画面に出力させる設定です
+     */
+    public function render($request, Throwable $exception)
+    {
+        return response()->json([
+            'real_error_message' => $exception->getMessage(),
+            'file' => $exception->getFile(),
+            'line' => $exception->getLine(),
+        ], 500);
+    }
 }
