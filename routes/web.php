@@ -40,7 +40,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // CSV出力(お問い合わせ一覧)
-Route::get('contacts/export', [ContactController::class, 'export']);
+Route::get('contacts/export', [ContactController::class, 'export'])->name('contacts.export');
 Route::get('test-csv', [ContactController::class, 'export']);
 
 // JSON(お問い合わせCRUD) - 認証不要

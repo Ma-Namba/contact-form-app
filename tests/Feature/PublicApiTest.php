@@ -7,12 +7,13 @@ use App\Models\Contact;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
+
 class PublicApiTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function お問い合わせ一覧をJSON形式で取得できる(): void
+    public function お問い合わせ一覧と詳細をJSON形式で取得できる(): void
     {
         // Arrange
         $category = Category::factory()->create();
@@ -28,6 +29,56 @@ class PublicApiTest extends TestCase
 
         $response2 = $this->getJson("/api/v1/contacts/{$contact_id}");
         $response2->assertStatus(200);
+    }
+
+    /** @test */
+    public function 新規作成をJSON形式で取得できる(): void
+    {
+        $category = Category::factory()->create();
+        $requestData = Contact::factory()->make()->toArray();
+
+        $response = $this->postJson('/api/v1/contacts',$requestData);
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('contacts', [
+            'email' => $requestData['email'],
+            'detail' => $requestData['detail'],
+        ]);
+    }
+
+    /** @test */
+    public function お問い合わせの更新をJSON形式で取得できる(): void
+    {
+        $category = Category::factory()->create();
+        $request = Contact::factory()->create([
+            'detail' => 'aaaaaaaaaaaaaa'
+        ]);
+
+        $requestData = Contact::factory()->make([
+            'detail' => 'bbbbbbbbbbbbbb'
+        ])->toArray();
+
+        $response = $this->putJson("/api/v1/contacts/{$request->id}", $requestData);
+        $response->assertStatus(200);
+
+        $this->assertDatabaseHas('contacts', [
+            'detail' => 'bbbbbbbbbbbbbb'
+        ]);
+
+        $this->assertDatabaseMissing('contacts', [
+            'detail' => 'aaaaaaaaaaaaaa',
+        ]);
+    }
+
+    /** @test */
+    public function お問い合わせの削除をJSON形式で取得できる(): void
+    {
+        $category = Category::factory()->create();
+        $contact = Contact::factory()->create();
+
+        $response = $this->deleteJson("/api/v1/contacts/{$contact->id}");
+        $response->assertStatus(202);
+
+        $this->assertDatabaseMissing('contacts',['contact']);
     }
 
     /** @test */

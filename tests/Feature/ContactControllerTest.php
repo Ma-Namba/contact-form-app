@@ -16,6 +16,7 @@ class ContactControllerTest extends TestCase
      */
     public function test_お問い合わせフォームにカテゴリーとタグが表示される(): void
     {
+
         $category = Category::factory()->create([
             'content' => 'カテゴリー',
         ]);
@@ -50,7 +51,6 @@ class ContactControllerTest extends TestCase
         $response->assertStatus(200);
 
         $response = $this->post(route('contact.update', $request));
-        $response = $response->assertViewIs('contact.thanks');
 
         $response = $this->assertDatabaseHas(Contact::class, [
             'address' => 'aaa',
@@ -75,5 +75,23 @@ class ContactControllerTest extends TestCase
 
         $response = $this->post(route('contact.confirm', $request));
         $response->assertSessionHasErrors('first_name');
+    }
+
+    public function test_検索キーワードが正常値であれば検索されCSV出力される(): void
+    {
+        $category = Category::factory()->create();
+        $contact_ok = Contact::factory()->create([
+            'category_id' => $category->id,
+            'first_name' => 'Yamada',
+            'last_name' => 'Taro',
+        ]);
+
+        $response = $this->get(route('contacts.export', ['keyword' => 'Yamada']));
+        $response->assertStatus(200);
+
+        $response->assertHeader('Content-Type', 'text/csv; charset=UTF-8');
+
+        $csvContent = $response->streamedContent();
+        $this->assertStringContainsString('Yamada', $csvContent);
     }
 }

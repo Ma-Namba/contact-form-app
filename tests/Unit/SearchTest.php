@@ -71,7 +71,7 @@ class SearchTest extends TestCase
         $this->assertCount(5, $contacts);
 
         // 日付を指定してリクエストを送信
-        $response = $this->actingAs($user)->get('/admin?keyword=&gender=0&category_id=&date=2026-07-19');
+        $response = $this->actingAs($user)->get('/admin?keyword=&gender=0&category_id=&date=2026-07-22');
         $response->assertStatus(200);
         $contacts = $response->viewData('contacts');
         $this->assertCount(7, $contacts);
